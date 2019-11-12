@@ -4,9 +4,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,9 +24,9 @@ import com.everis.demo.model.Product;
 @RestController
 public class ProductServiceController {
 	
-	String cabecera;
+//	String cabecera = "valor1";
 	
-	String valorCabecera;
+	String valorParametroCabecera;
 	
 	private static Map<String, Product> productRepo = new HashMap<>();
 	static {
@@ -38,7 +42,11 @@ public class ProductServiceController {
 
 	@RequestMapping(value = "/products")
 	public ResponseEntity<Collection<Product>> getProduct(@RequestHeader("valor1") String parametroCabecera) {
-		valorCabecera = parametroCabecera + "Modificado";
-		return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+		valorParametroCabecera = parametroCabecera + "Modificado";
+		HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.set("valor1", valorParametroCabecera);
+	    System.out.println("Parámetro = valor1 Valor ="+valorParametroCabecera);
+		return new ResponseEntity<>(productRepo.values(), responseHeaders, HttpStatus.OK);
 	}
+ 
 }
