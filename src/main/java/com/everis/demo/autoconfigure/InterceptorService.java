@@ -1,10 +1,9 @@
-package com.everis.demo.interceptor;
+package com.everis.demo.autoconfigure;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +12,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-public class ProductServiceInterceptor implements HandlerInterceptor {
+public class InterceptorService implements HandlerInterceptor {
 
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+		Enumeration en = request.getHeaderNames();
+		while (en.hasMoreElements()) {
+			String headerName = (String) en.nextElement();
+			String headerValue = request.getHeader(headerName);
+			System.out.println(" Parámetro: "+headerName+", Valor: "+headerValue);
+		}
 		System.out.println("Pre Handle method is Calling");
 		return true;
 	}
